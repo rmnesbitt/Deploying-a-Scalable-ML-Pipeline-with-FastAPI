@@ -1,6 +1,7 @@
 import pandas as pd
+
 from sklearn.ensemble import RandomForestClassifier
-from ml.model import compute_model_metrics, train_model
+from ml.model import compute_model_metrics, inference, train_model
 
 
 def test_train_model():
@@ -30,13 +31,19 @@ def test_compute_model_metrics():
     assert 0 <= fbeta <= 1
 
 
-def test_training_data_shape():
-    """Verify that the training data has the expected shape."""
+def test_inference():
+    """Verify that inference returns one prediction per input row."""
     X_train = pd.DataFrame(
         {
             "feature1": [1, 2, 3, 4],
             "feature2": [5, 6, 7, 8],
         }
     )
+    y_train = [0, 1, 0, 1]
 
-    assert X_train.shape == (4, 2)
+    model = train_model(X_train, y_train)
+
+    predictions = inference(model, X_train)
+
+    assert len(predictions) == len(X_train)
+    assert set(predictions).issubset({0, 1})

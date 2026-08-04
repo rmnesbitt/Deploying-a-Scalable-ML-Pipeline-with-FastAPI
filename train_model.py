@@ -102,7 +102,7 @@ for col in cat_features:
             model,
         )
 
-        with open(slice_output_path, "a") as file:
+        with open(slice_output_path, "w") as file:
             print(f"{col}: {slicevalue}, Count: {count:,}", file=file)
             print(
                 f"Precision: {p:.4f} | Recall: {r:.4f} | "
